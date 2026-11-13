@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#f5f5f7">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Codex 副屏">
+  <title>Codex 副屏</title>
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="stylesheet" href="/app.css">
+  <script src="/marked.js" defer></script>
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand-group"><a class="brand" href="/" aria-label="Codex 副屏首页"><span class="brand-icon" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 28 28" fill="none"><path d="m9 7-6 7 6 7m10-14 6 7-6 7M16 4l-4 20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="brand-wordmark">Codex<b>副屏</b></span></a><button class="connection" id="connection" type="button" aria-label="连接状态：正在连接" title="正在连接"><i aria-hidden="true"></i><span class="sr-only" role="status">正在连接</span></button></div>
+      <div class="toolbar"><button class="utility-button" id="fullscreenButton" aria-label="进入全屏" title="进入全屏"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 4H4v5m11-5h5v5M4 15v5h5m11-5v5h-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>全屏</span></button><button class="utility-button" id="settingsButton" aria-label="打开设置" title="设置"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7h16M4 17h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="9" cy="7" r="3" fill="#f5f5f7" stroke="currentColor" stroke-width="1.8"/><circle cx="15" cy="17" r="3" fill="#f5f5f7" stroke="currentColor" stroke-width="1.8"/></svg><span>设置</span></button><button class="pair-button" id="pairButton" aria-label="连接手机" title="连接手机"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 3h6v6H3zm12 0h6v6h-6zM3 15h6v6H3zm12 0h2v2h-2zm4 0h2v6h-6v-2h4z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg><span>连接手机</span></button></div>
+    </header>
+    <main>
+      <div class="source-banner" id="sourceBanner" hidden></div>
+      <section id="tasks" class="task-grid" aria-label="正在执行的任务"><div class="empty"><span class="empty-icon">⌁</span><h2>正在接收任务进展</h2><p>连接本机上的 Codex 桌面应用…</p></div></section>
+    </main>
+    <footer><span><i class="live-dot"></i> <span id="syncLabel">连接中</span></span><button class="sessions-button" id="sessionsButton">打开会话</button><span id="lastSync">等待首次同步</span><span class="footer-note"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m8 1.5 5 2v4c0 3-3 5.5-5 7-2-1.5-5-4-5-7v-4l5-2Z" stroke="currentColor" stroke-linejoin="round"/><path d="m5.5 7.5 1.5 1.5 3-3" stroke="currentColor" stroke-linecap="round"/></svg> 本机连接 · 局域网同步</span><span class="app-version" id="appVersion" data-page-version="1.3.0" aria-label="版本 1.3.0">v1.3.0</span></footer>
+  </div>
+  <dialog id="detailDialog" class="detail-dialog" aria-label="会话进展详情"><section class="detail-panel" id="details"></section></dialog>
+  <dialog id="sessionsDialog" aria-label="最近会话"><div class="dialog-head"><div class="eyebrow">CONVERSATIONS</div><button class="icon-button" data-close="sessionsDialog" aria-label="关闭会话列表">×</button></div><h2>继续电脑上的会话</h2><div id="sessionList"></div></dialog>
+  <dialog id="pairDialog"><div class="dialog-head"><div class="eyebrow">PAIR YOUR DEVICE</div><button class="icon-button" data-close="pairDialog" aria-label="关闭">×</button></div><h2>用 6 位码连接手机。</h2><p>手机和电脑连接同一 Wi-Fi，在 App 中选择这台电脑并输入下方配对码。</p><div id="pairLinks"></div><div class="tip">首次配对后会记住设备，电脑服务重启也可重新连接。可在下方随时取消设备配对。</div><p class="muted small">配对码有效期 10 分钟，成功配对一次后失效。请只向自己的设备提供。</p></dialog>
+  <dialog id="settingsDialog"><div class="dialog-head"><div class="eyebrow">PREFERENCES</div><button class="icon-button" data-close="settingsDialog" aria-label="关闭">×</button></div><h2>你的专注方式</h2><label class="setting-row"><span><b>提示音</b><small>出现新的待处理请求或任务异常时提醒</small></span><input type="checkbox" id="soundToggle" role="switch"></label><label class="setting-row"><span><b>保持屏幕常亮</b><small id="wakeHint">在支持的浏览器中保持副屏亮起</small></span><input type="checkbox" id="wakeToggle" role="switch"></label><div class="tip" id="wakeSupportTip">局域网 HTTP 下，部分手机不支持浏览器常亮功能；可在系统设置中延长自动锁屏时间。锁屏或浏览器进入后台后，同步和提示音可能暂停。</div><div class="settings-note"><i class="live-dot"></i> 已配对设备可在任务详情中审批、回答问题和发送文字。每次操作由你手动提交，同步到对应电脑会话。</div></dialog>
+  <dialog id="loginDialog"><div class="eyebrow">PAIR YOUR DEVICE</div><h2>连接你的 Codex。</h2><p id="loginHelp">在电脑上打开副屏面板，点击「连接手机」，将完整配对链接发送到这台手机并打开。</p><p id="loginError" class="error"></p><button class="primary-button" id="localConnect">连接这台电脑</button></dialog>
+  <div id="toast" role="status" class="toast" hidden></div>
+</body>
+</html>

@@ -1,0 +1,16 @@
+{
+  "name": "codex-companion",
+  "version": "1.3.0",
+  "private": true,
+  "description": "LAN companion screen for existing Codex desktop sessions",
+  "scripts": {
+    "test": "node tests/control-browser.cjs && node tests/keyboard-browser.cjs && node tests/markdown-browser.cjs",
+    "test:live": "node tests/browser.cjs",
+    "screenshots": "node scripts/screenshots.cjs"
+  },
+  "devDependencies": {
+    "playwright": "1.58.2"
+  },
+  "engines": { "node": ">=20" },
+  "license": "MIT"
+}

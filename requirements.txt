@@ -1,0 +1,2 @@
+# Optional SVG pairing QR codes. The server otherwise uses Python's stdlib.
+qrcode==8.2

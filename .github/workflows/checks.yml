@@ -1,0 +1,36 @@
+name: Checks
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      - run: python -m unittest discover -s tests -v
+  browser:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Start isolated server
+        run: |
+          python monitor.py --host 127.0.0.1 --codex-home "$RUNNER_TEMP/empty-codex" --runtime-dir "$RUNNER_TEMP/companion-state" > "$RUNNER_TEMP/companion.log" 2>&1 &
+          for attempt in $(seq 1 40); do
+            if curl --fail --silent http://127.0.0.1:18377/api/health; then exit 0; fi
+            sleep 0.25
+          done
+          cat "$RUNNER_TEMP/companion.log"
+          exit 1
+      - run: npm test
